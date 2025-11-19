@@ -5,54 +5,39 @@ import {inputValidationResult} from "../../core/middlewares/validation/inputVali
 import {basicAuthMiddleware} from "../../auth/middlewares/basicAuthMiddleware";
 import {Blog} from "../types/blog";
 import {idValidation} from "../../core/middlewares/validation/paramValidation";
+import {deleteBlogHandler} from "./handlers/deleteBlogHandler";
+import {updateBlogHandler} from "./handlers/updateBlogHandler";
+import {createBlogHandler} from "./handlers/createBlogHandler";
+import {getBlogHandler} from "./handlers/getBlogHandler";
+import {getAllBlogsHandler} from "./handlers/getAllBlogsHandler";
 
 export const blogsRouter = Router({});
 
-blogsRouter.get('/', (req: Request, res: Response) => {
-    res.status(200).json(db.blogs);
-});
+blogsRouter.get('/', getAllBlogsHandler);
 
-blogsRouter.get('/:id', (req: Request, res: Response) => {
-    const foundBlog = db.blogs.find(blog => blog.id === req.params.id);
-    if (!foundBlog) {
-        res.sendStatus(404);
-        return;
-    }
-    res.status(200).json(foundBlog);
-});
+blogsRouter.get('/:id',
+    idValidation,
+    inputValidationResult,
+    getBlogHandler);
 
-blogsRouter.post('/', basicAuthMiddleware, blogsInputDtoValidation, inputValidationResult, (req: Request, res: Response) => {
+blogsRouter.post('/',
+    basicAuthMiddleware,
+    blogsInputDtoValidation,
+    inputValidationResult,
+    createBlogHandler
+);
 
-    const newBlog: Blog = {
-        id: (db.blogs.length + 1).toString(),
-        name: req.body.name,
-        description: req.body.description,
-        websiteUrl: req.body.websiteUrl,
-    }
+blogsRouter.put('/:id',
+    basicAuthMiddleware,
+    idValidation,
+    blogsInputDtoValidation,
+    inputValidationResult,
+    updateBlogHandler
+);
 
-    db.blogs.push(newBlog);
-
-    res.status(201).json(newBlog);
-});
-
-blogsRouter.put('/:id', basicAuthMiddleware, idValidation, blogsInputDtoValidation, inputValidationResult,  (req: Request, res: Response) => {
-    const foundBlog = db.blogs.find(blog => blog.id === req.params.id);
-    if (!foundBlog) {
-        res.sendStatus(404);
-        return;
-    }
-    foundBlog.name = req.body.name;
-    foundBlog.description = req.body.description;
-    foundBlog.websiteUrl = req.body.websiteUrl;
-    res.sendStatus(204);
-});
-
-blogsRouter.delete('/:id', basicAuthMiddleware, idValidation, inputValidationResult, (req: Request, res: Response) => {
-    const foundBlog = db.blogs.find(blog => blog.id === req.params.id);
-    if (!foundBlog) {
-        res.sendStatus(404);
-        return;
-    }
-    db.blogs = db.blogs.filter(blog => blog.id !== req.params.id);
-    res.sendStatus(204);
-})
+blogsRouter.delete('/:id',
+    basicAuthMiddleware,
+    idValidation,
+    inputValidationResult,
+    deleteBlogHandler
+);

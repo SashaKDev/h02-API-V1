@@ -17,5 +17,7 @@ export const createPostHandler = (req: Request, res: Response) => {
         blogName: foundBlog.name
     }
     db.posts.push(newPost);
-    res.status(201).json(newPost);
+    res
+        .status(201)
+        .json(newPost);
 }
