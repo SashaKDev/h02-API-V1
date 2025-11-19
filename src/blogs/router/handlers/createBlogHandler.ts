@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import {db} from "../../../db/in-memory.db";
 import {Blog} from "../../types/blog";
+import {blogsRepository} from "../../repositories/blogsRepository";
 
 export const createBlogHandler = (req: Request, res: Response) => {
     const newBlog: Blog = {
@@ -10,7 +11,7 @@ export const createBlogHandler = (req: Request, res: Response) => {
         websiteUrl: req.body.websiteUrl,
     }
 
-    db.blogs.push(newBlog);
+    blogsRepository.create(newBlog);
 
     res
         .status(201)

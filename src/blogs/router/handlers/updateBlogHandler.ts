@@ -1,14 +1,18 @@
 import {Request, Response} from "express";
-import {db} from "../../../db/in-memory.db";
+import {blogsRepository} from "../../repositories/blogsRepository";
+import {BlogInputDto} from "../../dto/blog-input.dto";
 
 export const updateBlogHandler = (req: Request, res: Response) => {
-    const foundBlog = db.blogs.find(blog => blog.id === req.params.id);
+    const foundBlog = blogsRepository.findById(req.params.id);
     if (!foundBlog) {
         res.sendStatus(404);
         return;
     }
-    foundBlog.name = req.body.name;
-    foundBlog.description = req.body.description;
-    foundBlog.websiteUrl = req.body.websiteUrl;
+    const dto: BlogInputDto = {
+        name: req.body.name,
+        description: req.body.description,
+        websiteUrl: req.body.websiteUrl,
+    }
+    blogsRepository.update(req.params.id, dto);
     res.sendStatus(204);
 }

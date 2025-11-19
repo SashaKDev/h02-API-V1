@@ -1,13 +1,13 @@
-import {Request, RequestHandler, Response} from 'express';
-import {db} from "../../../db/in-memory.db";
+import {Request, Response} from 'express';
+import {blogsRepository} from "../../repositories/blogsRepository";
 
 export const getBlogHandler = (req: Request, res: Response) => {
-    const foundBlog = db.blogs.find(blog => blog.id === req.params.id);
-    if (!foundBlog) {
+    const foundCourse = blogsRepository.findById(req.params.id);
+    if (!foundCourse) {
         res.sendStatus(404);
         return;
     }
     res
         .status(200)
-        .json(foundBlog);
+        .json(foundCourse);
 }
