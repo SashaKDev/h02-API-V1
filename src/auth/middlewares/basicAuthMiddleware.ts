@@ -14,7 +14,7 @@ export const basicAuthMiddleware = (req: Request, res: Response, next: NextFunct
         res.sendStatus(401);
         return
     }
-    const decodedAuth = atob(token);
+    const decodedAuth = Buffer.from(token, 'base64').toString('utf-8');
     const [username, password] = decodedAuth.split(":");
     if(username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
         res.sendStatus(401);
