@@ -53,6 +53,6 @@ blogsRouter.delete('/:id', basicAuthMiddleware, idValidation, inputValidationRes
         res.sendStatus(404);
         return;
     }
-    db.blogs.filter(blog => blog.id !== req.params.id);
+    db.blogs = db.blogs.filter(blog => blog.id !== req.params.id);
     res.sendStatus(204);
 })
