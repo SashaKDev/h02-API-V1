@@ -34,6 +34,7 @@ postsRouter.post('/', basicAuthMiddleware, postInputDtoValidation, inputValidati
         blogId: req.body.blogId,
         blogName: foundBlog.name
     }
+    db.posts.push(newPost);
     res.status(201).json(newPost);
 });
 
