@@ -8,15 +8,15 @@ export const inputValidationResult = (req: Request, res: Response, next: NextFun
         const fieldValidationError = validationError as FieldValidationError;
 
         return {
-            field: fieldValidationError.path,
             message: fieldValidationError.msg,
+            field: fieldValidationError.path,
         }
     }
 
     const errors = validationResult(req).formatWith(errorFormatter).array({onlyFirstError: true});
 
     if (errors.length) {
-        res.status(400).json(errors);
+        res.status(400).json({errorsMessages: errors});
     }
     next();
 }
