@@ -5,7 +5,7 @@ import {blogsRepository} from "../../../blogs/repositories/blogsRepository";
 import {postsRepository} from "../../repositories/postsRepository";
 
 export const createPostHandler = (req: Request, res: Response) => {
-    const foundBlog = blogsRepository.findById(req.params.id);
+    const foundBlog = blogsRepository.findById(req.body.blogId);
     if (!foundBlog) {
         res.sendStatus(404);
         return;
