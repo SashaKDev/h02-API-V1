@@ -2,7 +2,7 @@ import {Request, Response, NextFunction} from 'express';
 
 export const basicAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
-    const auth = req.headers['authorization'];
+    const auth = req.headers['authorization'] as string;
 
     if (!auth) {
         res.sendStatus(401);
