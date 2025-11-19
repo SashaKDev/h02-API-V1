@@ -41,6 +41,9 @@ blogsRouter.put('/:id', basicAuthMiddleware, idValidation, blogsInputDtoValidati
         res.sendStatus(404);
         return;
     }
+    foundBlog.name = req.body.name;
+    foundBlog.description = req.body.description;
+    foundBlog.websiteUrl = req.body.websiteUrl;
     res.sendStatus(204);
 });
 
