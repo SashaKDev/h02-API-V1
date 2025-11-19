@@ -4,12 +4,12 @@ import {blogsRepository} from "../../../blogs/repositories/blogsRepository";
 import {PostInputDto} from "../../dto/post-input.dto";
 
 export const updatePostHandler = (req: Request, res: Response) => {
-    const foundPost = postsRepository.findById(req.body.blogId);
+    const foundPost = postsRepository.findById(req.params.id);
     if (!foundPost) {
         res.sendStatus(404);
         return;
     }
-    const foundBlog = blogsRepository.findById(req.params.blogId);
+    const foundBlog = blogsRepository.findById(req.body.blogId);
     if (!foundBlog) {
         res.sendStatus(404);
         return;

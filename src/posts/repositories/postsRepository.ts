@@ -26,5 +26,9 @@ export const postsRepository = {
             foundPost.blogId = dto.blogId;
             foundPost.blogName = foundBlog.name;
         }
+    },
+
+    delete(id: string) {
+        db.posts = db.posts.filter(posts => posts.id !== id);
     }
 };
