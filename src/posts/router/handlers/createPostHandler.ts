@@ -1,9 +1,11 @@
 import {Request, Response} from 'express';
 import {db} from "../../../db/in-memory.db";
 import {Post} from "../../types/post";
+import {blogsRepository} from "../../../blogs/repositories/blogsRepository";
+import {postsRepository} from "../../repositories/postsRepository";
 
 export const createPostHandler = (req: Request, res: Response) => {
-    const foundBlog = db.blogs.find(blog => blog.id === req.body.blogId);
+    const foundBlog = blogsRepository.findById(req.params.id);
     if (!foundBlog) {
         res.sendStatus(404);
         return;
@@ -16,7 +18,7 @@ export const createPostHandler = (req: Request, res: Response) => {
         blogId: req.body.blogId,
         blogName: foundBlog.name
     }
-    db.posts.push(newPost);
+    postsRepository.create(newPost);
     res
         .status(201)
         .json(newPost);

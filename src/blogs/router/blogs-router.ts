@@ -1,9 +1,7 @@
-import {Router,Request, Response} from "express";
-import {db} from "../../db/in-memory.db";
+import {Router} from "express";
 import {blogsInputDtoValidation} from "../validation/blogsInputDtoValidation";
 import {inputValidationResult} from "../../core/middlewares/validation/inputValidationResult";
 import {basicAuthMiddleware} from "../../auth/middlewares/basicAuthMiddleware";
-import {Blog} from "../types/blog";
 import {idValidation} from "../../core/middlewares/validation/paramValidation";
 import {deleteBlogHandler} from "./handlers/deleteBlogHandler";
 import {updateBlogHandler} from "./handlers/updateBlogHandler";
