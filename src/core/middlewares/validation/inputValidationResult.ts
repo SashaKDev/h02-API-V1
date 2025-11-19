@@ -8,10 +8,10 @@ export const inputValidationResult = (req: Request, res: Response, next: NextFun
 
     }
 
-    const errors = validationResult(req).formatWith((error) => {error.msg}).array()
+    const errors = validationResult(req);
 
-    if (errors.length) {
-        res.status(400).json(errors);
+    if (!errors.isEmpty()) {
+        res.status(400).json({message: errors.array()});
     }
     next();
 }
