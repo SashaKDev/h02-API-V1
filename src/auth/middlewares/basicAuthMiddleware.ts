@@ -1,28 +1,28 @@
-import { NextFunction, Request, Response } from 'express';
-
-export const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'qwerty';
+import {Request, Response, NextFunction} from 'express';
 
 export const basicAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    const auth = req.headers['authorization'] as string; // 'Basic xxxx'
+
+    const auth = req.headers['authorization'];
+
     if (!auth) {
         res.sendStatus(401);
         return;
     }
+    const authType = auth.split(' ')[0];
+    const authToken = auth.split(' ')[1];
 
-    const [authType, token] = auth.split(' '); //admin:qwerty
     if (authType !== 'Basic') {
         res.sendStatus(401);
         return;
     }
 
-    const credentials = Buffer.from(token, 'base64').toString('utf-8');
-    const [username, password] = credentials.split(':');
+    const credentials = Buffer.from(authToken, 'base64').toString('utf-8');
+    const username = credentials.split(':')[0];
+    const password = credentials.split(':')[1];
 
-    if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
+    if (username !== 'admin' || password !== 'qwerty') {
         res.sendStatus(401);
         return;
     }
-
-    next(); // Успешная авторизация, продолжаем
-};
+    next();
+}
