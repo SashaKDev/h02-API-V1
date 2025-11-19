@@ -11,7 +11,7 @@ export const inputValidationResult = (req: Request, res: Response, next: NextFun
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        res.status(400).json({message: errors.array()});
+        res.status(400).json({message: errors.array()[0].msg, field: errors.array()[0].type});
     }
     next();
 }
